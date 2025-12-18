@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "github:VincentHanxiaoDu/playwright-unblock-mcp",
+        "--stealth",
+        "--user-data-dir=profiles/test"
+      ]
+    }
+  }
+}
