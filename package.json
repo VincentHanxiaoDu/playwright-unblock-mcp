@@ -1,5 +1,5 @@
 {
-  "name": "@playwright/mcp",
+  "name": "playwright-unblock-mcp",
   "version": "0.0.52",
   "description": "Playwright Tools for MCP",
   "mcpName": "com.microsoft/playwright-mcp",
