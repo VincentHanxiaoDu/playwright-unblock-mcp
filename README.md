@@ -479,6 +479,55 @@ This is useful for overriding browser APIs or setting up the environment.
 window.isPlaywrightMCP = true;
 ```
 
+### Stealth Mode
+
+Stealth mode helps bypass common bot detection mechanisms used by websites (Cloudflare, DataDome, etc.). When enabled, it injects anti-detection scripts that hide automation fingerprints.
+
+**Enable stealth mode:**
+
+```js
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--stealth"
+      ]
+    }
+  }
+}
+```
+
+**What stealth mode does:**
+- Hides the `navigator.webdriver` property
+- Masks automation-related Chrome runtime properties
+- Adds realistic browser plugins to avoid headless detection
+- Prevents detection via stack traces (sourceURL fingerprinting)
+- Overrides permissions API to hide automation signals
+
+**Limitations:**
+- Stealth mode is most effective with Chromium-based browsers (Chrome, Edge)
+- Does not guarantee bypassing all anti-bot systems - some require additional measures like residential proxies and realistic fingerprints
+- May need to be combined with `--user-agent` for best results
+
+**Combine with proxy for better results:**
+
+```js
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest",
+        "--stealth",
+        "--proxy-server=http://myproxy:3128"
+      ]
+    }
+  }
+}
+```
+
 ### Configuration file
 
 The Playwright MCP server can be configured using a JSON configuration file. You can specify the configuration file

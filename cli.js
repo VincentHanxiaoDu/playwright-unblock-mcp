@@ -15,10 +15,28 @@
  * limitations under the License.
  */
 
+const path = require('path');
+
+// Handle --stealth flag before importing Playwright modules
+// This injects anti-detection scripts and sets up environment variables
+const stealthIndex = process.argv.findIndex(arg => arg === '--stealth' || arg.startsWith('--stealth='));
+if (stealthIndex !== -1) {
+  // Inject the stealth init script
+  const stealthScriptPath = path.join(__dirname, 'stealth.js');
+  process.argv.push('--init-script', stealthScriptPath);
+
+  // Remove the --stealth flag so it doesn't confuse the main program parser
+  process.argv.splice(stealthIndex, 1);
+}
+
 const { program } = require('playwright-core/lib/utilsBundle');
 const { decorateCommand } = require('playwright/lib/mcp/program');
 
 const packageJSON = require('./package.json');
 const p = program.version('Version ' + packageJSON.version).name('Playwright MCP');
+
+// Add --stealth option documentation
+p.option('--stealth', 'enable stealth mode to bypass bot detection');
+
 decorateCommand(p, packageJSON.version)
 void program.parseAsync(process.argv);
